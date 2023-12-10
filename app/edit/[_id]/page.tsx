@@ -33,7 +33,7 @@ export default function Edit({ params: { _id } }: Props) {
     };
 
     fetchNotices();
-  }, []);
+  }, [_id]);
 
   const onChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -54,7 +54,7 @@ export default function Edit({ params: { _id } }: Props) {
     const title = titleElement.value;
     const body = bodyElement.value;
 
-    updateNotice({ _id, title, body });
+    await updateNotice({ _id, title, body });
     push("/");
   };
 

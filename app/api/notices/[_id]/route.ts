@@ -5,13 +5,16 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { _id: string } }
 ) {
-  const { _id } = params;
+  try {
+    const { _id } = params;
 
-  if (!_id) {
-    return Response.json({ error: "_id is required" });
+    if (!_id) {
+      return Response.json({ error: "_id is required" });
+    }
+    const data = await getNotice(_id);
+
+    return Response.json({ data });
+  } catch (error) {
+    return Response.json({ error }, { status: 500 });
   }
-
-  const data = await getNotice(_id);
-
-  return Response.json({ data });
 }

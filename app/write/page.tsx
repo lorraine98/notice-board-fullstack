@@ -9,7 +9,7 @@ export default function Write() {
   const { push } = useRouter();
   const { addNotice } = useContext(NoticesContext);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formElements = (event.target as HTMLFormElement).elements;
@@ -19,7 +19,7 @@ export default function Write() {
     const title = titleElement.value;
     const body = bodyElement.value;
 
-    addNotice({ title, body });
+    await addNotice({ title, body });
     push("/");
   };
 
