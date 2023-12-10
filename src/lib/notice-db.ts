@@ -1,10 +1,9 @@
 import { Notice } from "../models/notice.schema";
 import { connectDb } from "./connect-db";
 
-connectDb();
-
 export const getNotices = async () => {
   try {
+    await connectDb();
     const notices = await Notice.find();
 
     return {
@@ -17,6 +16,7 @@ export const getNotices = async () => {
 
 export const getNotice = async (_id: string) => {
   try {
+    await connectDb();
     const notice = await Notice.findOne({ _id });
 
     return {
@@ -35,6 +35,7 @@ export const postNotice = async ({
   body: string;
 }) => {
   try {
+    await connectDb();
     const notice = new Notice({ title, body, date: Date.now() });
     await notice.save();
 
@@ -49,6 +50,7 @@ export const postNotice = async ({
 
 export const deleteNotice = async (_id: string) => {
   try {
+    await connectDb();
     const { deletedCount } = await Notice.deleteOne({ _id });
 
     if (deletedCount === 0) {
@@ -69,6 +71,7 @@ export const updateNotice = async (
   body: string
 ) => {
   try {
+    await connectDb();
     const { matchedCount } = await Notice.updateOne({ _id }, { title, body });
 
     if (matchedCount === 0) {
