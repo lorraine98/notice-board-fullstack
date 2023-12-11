@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  createNotice,
+  patchNotice,
+  removeNotice,
+} from "@/src/lib/client-api/notices";
 import { Notice } from "@/src/types/Notice";
 import { PropsWithChildren, createContext, useState } from "react";
 
@@ -41,16 +46,7 @@ export default function NoticesProvider({ children, initialNotices }: Props) {
     body: string;
   }) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/notices`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, body }),
-        }
-      );
-
-      const { data } = await response.json();
+      const { response, data } = await createNotice({ title, body });
 
       if (response.status !== 200) {
         throw new Error("server error");
@@ -63,9 +59,7 @@ export default function NoticesProvider({ children, initialNotices }: Props) {
 
   const deleteNotice = async (_id: string) => {
     try {
-      const response = await fetch(`/api/notices?_id=${_id}`, {
-        method: "DELETE",
-      });
+      const { response } = await removeNotice(_id);
 
       if (response.status !== 200) {
         throw new Error("server error");
@@ -87,15 +81,7 @@ export default function NoticesProvider({ children, initialNotices }: Props) {
     body: string;
   }) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/notices?_id=${_id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, body }),
-        }
-      );
-      const { data } = await response.json();
+      const { response, data } = await patchNotice({ _id, title, body });
 
       if (response.status !== 200) {
         throw new Error(data?.error);

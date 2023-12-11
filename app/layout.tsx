@@ -1,7 +1,6 @@
+import { getNotices } from "@/src/lib/client-api/notices";
 import "./globals.css";
 import NoticesProvider from "./provider/notices-provider";
-
-const { NEXT_PUBLIC_BASE_URL } = process.env;
 
 export const metadata = {
   title: "home",
@@ -13,8 +12,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const res = await fetch(`${NEXT_PUBLIC_BASE_URL}/api/notices`);
-  const { data } = await res.json();
+  const data = await getNotices();
 
   return (
     <html lang="en">
