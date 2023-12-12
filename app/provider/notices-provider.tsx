@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  createNotice,
-  patchNotice,
-  removeNotice,
-} from "@/src/lib/client-api/notices";
+import { apiClient } from "@/src/lib/client-api/notices";
 import { Notice } from "@/src/types/Notice";
 import { PropsWithChildren, createContext, useState } from "react";
 
@@ -46,7 +42,7 @@ export default function NoticesProvider({ children, initialNotices }: Props) {
     body: string;
   }) => {
     try {
-      const { response, data } = await createNotice({ title, body });
+      const { response, data } = await apiClient.postNotice({ title, body });
 
       if (response.status !== 200) {
         throw new Error("server error");
@@ -59,7 +55,7 @@ export default function NoticesProvider({ children, initialNotices }: Props) {
 
   const deleteNotice = async (_id: string) => {
     try {
-      const { response } = await removeNotice(_id);
+      const { response } = await apiClient.deleteNotice(_id);
 
       if (response.status !== 200) {
         throw new Error("server error");
@@ -81,7 +77,11 @@ export default function NoticesProvider({ children, initialNotices }: Props) {
     body: string;
   }) => {
     try {
-      const { response, data } = await patchNotice({ _id, title, body });
+      const { response, data } = await apiClient.patchNotice({
+        _id,
+        title,
+        body,
+      });
 
       if (response.status !== 200) {
         throw new Error(data?.error);

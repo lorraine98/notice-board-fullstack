@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import styles from "../../page.module.css";
 import { useRouter } from "next/navigation";
 import { NoticesContext } from "@/app/provider/notices-provider";
-import { getNotice } from "@/src/lib/client-api/notices";
+import { apiClient } from "@/src/lib/client-api/notices";
 
 interface Props {
   params: {
@@ -23,7 +23,7 @@ export default function Edit({ params: { _id } }: Props) {
 
   useEffect(() => {
     const fetchNotices = async () => {
-      const data = await getNotice(_id);
+      const data = await apiClient.getNotice(_id);
 
       setValues({
         title: data.notice.title,

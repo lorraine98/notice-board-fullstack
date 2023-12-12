@@ -2,21 +2,21 @@ import { NoticeResponse, NoticesResponse } from "@/src/types/Notice";
 
 const NOTICES_END_POINT = `${process.env.NEXT_PUBLIC_BASE_URL}/api/notices`;
 
-export const getNotices = async (): Promise<NoticesResponse> => {
+const getNotices = async (): Promise<NoticesResponse> => {
   const res = await fetch(NOTICES_END_POINT);
   const { data } = await res.json();
 
   return data;
 };
 
-export const getNotice = async (_id: string): Promise<NoticeResponse> => {
+const getNotice = async (_id: string): Promise<NoticeResponse> => {
   const res = await fetch(`${NOTICES_END_POINT}/${_id}`);
   const { data } = await res.json();
 
   return data;
 };
 
-export const createNotice = async ({
+const postNotice = async ({
   title,
   body,
 }: {
@@ -37,9 +37,7 @@ export const createNotice = async ({
   return { response, data };
 };
 
-export const removeNotice = async (
-  _id: string
-): Promise<{ response: Response }> => {
+const deleteNotice = async (_id: string): Promise<{ response: Response }> => {
   const response = await fetch(`${NOTICES_END_POINT}?_id=${_id}`, {
     method: "DELETE",
   });
@@ -47,7 +45,7 @@ export const removeNotice = async (
   return { response };
 };
 
-export const patchNotice = async ({
+const patchNotice = async ({
   _id,
   title,
   body,
@@ -65,3 +63,11 @@ export const patchNotice = async ({
 
   return { response, data };
 };
+
+export const apiClient = {
+  getNotices,
+  getNotice,
+  postNotice,
+  deleteNotice,
+  patchNotice,
+} as const;

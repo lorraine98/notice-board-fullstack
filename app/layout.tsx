@@ -1,4 +1,4 @@
-import { getNotices } from "@/src/lib/client-api/notices";
+import { apiClient } from "@/src/lib/client-api/notices";
 import "./globals.css";
 import NoticesProvider from "./provider/notices-provider";
 
@@ -12,7 +12,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const data = await getNotices();
+  const data = await apiClient.getNotices();
 
   return (
     <html lang="en">
